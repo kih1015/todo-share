@@ -14,5 +14,5 @@ public interface LikeRepository extends Repository<Like, Long> {
 
     Like save(Like like);
 
-    void delete(Like like);
+    void deleteById(Long id);
 }

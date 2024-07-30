@@ -15,5 +15,5 @@ public interface TaskRepository extends Repository<Task, Long> {
 
     Task save(Task task);
 
-    void delete(Task task);
+    void deleteById(Long id);
 }
