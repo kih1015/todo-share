@@ -27,13 +27,13 @@ public class TaskService {
     }
 
     public TaskResponse getById(Long id) {
-        Task task = taskRepository.findById(id).orElseThrow();
+        Task task = taskRepository.findById(id);
         return TaskResponse.from(task);
     }
 
     @Transactional
     public TaskResponse update(Long id, TaskUpdateRequest taskUpdateRequest) {
-        Task task = taskRepository.findById(id).orElseThrow();
+        Task task = taskRepository.findById(id);
         task.update(taskUpdateRequest.title(), taskUpdateRequest.content(), taskUpdateRequest.deadline(), taskUpdateRequest.completed());
         return TaskResponse.from(task);
     }
