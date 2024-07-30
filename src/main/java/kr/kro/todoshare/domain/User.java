@@ -37,7 +37,7 @@ public class User {
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate;
 
-    @OneToMany(mappedBy = "task", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "writer", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
 
     public void update(String nickname, String password) {
