@@ -23,6 +23,7 @@ public class UserService {
                 .password(userCreateRequest.password())
                 .nickname(userCreateRequest.nickname())
                 .build();
+        userRepository.save(user);
         return UserResponse.fromUser(user);
     }
 

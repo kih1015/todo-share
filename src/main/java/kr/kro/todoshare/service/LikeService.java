@@ -24,6 +24,7 @@ public class LikeService {
                 .user(userRepository.findById(likeCreateRequest.user()))
                 .task(taskRepository.findById(likeCreateRequest.task()))
                 .build();
+        likeRepository.save(like);
     }
 
     @Transactional
