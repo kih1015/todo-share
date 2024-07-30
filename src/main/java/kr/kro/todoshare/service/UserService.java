@@ -23,19 +23,19 @@ public class UserService {
                 .password(userCreateRequest.password())
                 .nickname(userCreateRequest.nickname())
                 .build();
-        return UserResponse.fromUser(userRepository.save(user));
+        return UserResponse.from(userRepository.save(user));
     }
 
     public UserResponse getById(Long id) {
         User user = userRepository.findById(id);
-        return UserResponse.fromUser(user);
+        return UserResponse.from(user);
     }
 
     @Transactional
     public UserResponse update(Long id, UserUpdateRequest userUpdateRequest) {
         User user = userRepository.findById(id);
         user.update(userUpdateRequest.nickname(), userUpdateRequest.password());
-        return UserResponse.fromUser(user);
+        return UserResponse.from(user);
     }
 
     @Transactional
