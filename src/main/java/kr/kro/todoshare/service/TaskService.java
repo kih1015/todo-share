@@ -23,8 +23,7 @@ public class TaskService {
                 .content(taskCreateRequest.content())
                 .deadline(taskCreateRequest.deadline())
                 .build();
-        taskRepository.save(task);
-        return TaskResponse.from(task);
+        return TaskResponse.from(taskRepository.save(task));
     }
 
     public TaskResponse getById(Long id) {

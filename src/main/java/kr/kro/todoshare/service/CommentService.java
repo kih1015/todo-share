@@ -27,8 +27,7 @@ public class CommentService {
                 .writer(userRepository.findById(commentCreateRequest.writer()))
                 .task(taskRepository.findById(commentCreateRequest.task()))
                 .build();
-        commentRepository.save(comment);
-        return CommentResponse.from(comment);
+        return CommentResponse.from(commentRepository.save(comment));
     }
 
     public CommentResponse getById(Long id) {
