@@ -8,6 +8,15 @@ public record TaskResponse(Long id, String title, String content, Boolean comple
                            LocalDateTime createdDate, LocalDateTime modifiedDate, Long writer) {
 
     public static TaskResponse from(Task task) {
-        return new TaskResponse(task.getId(), task.getTitle(), task.getContent(), task.getCompleted(), task.getDeadline(), task.getCreatedDate(), task.getModifiedDate(), task.getWriter().getId());
+        return new TaskResponse(
+                task.getId(),
+                task.getTitle(),
+                task.getContent(),
+                task.getCompleted(),
+                task.getDeadline(),
+                task.getCreatedDate(),
+                task.getModifiedDate(),
+                task.getWriter().getId()
+        );
     }
 }
