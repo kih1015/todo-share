@@ -4,8 +4,16 @@ import kr.kro.todoshare.domain.Task;
 
 import java.time.LocalDateTime;
 
-public record TaskResponse(Long id, String title, String content, Boolean completed, LocalDateTime deadline,
-                           LocalDateTime createdDate, LocalDateTime modifiedDate, Long writer) {
+public record TaskResponse(
+        Long id,
+        String title,
+        String content,
+        Boolean completed,
+        LocalDateTime deadline,
+        LocalDateTime createdDate,
+        LocalDateTime modifiedDate,
+        Long writer
+) {
 
     public static TaskResponse from(Task task) {
         return new TaskResponse(
