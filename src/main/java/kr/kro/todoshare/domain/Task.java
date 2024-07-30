@@ -33,10 +33,10 @@ public class Task {
     private LocalDateTime deadline;
 
     @Column(name = "create_date")
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @Column(name = "modified_date")
-    private LocalDateTime modifiedDate;
+    private LocalDateTime modifiedDate = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer")
@@ -47,5 +47,6 @@ public class Task {
         this.content = content;
         this.deadline = deadline;
         this.completed = completed;
+        this.modifiedDate = LocalDateTime.now();
     }
 }

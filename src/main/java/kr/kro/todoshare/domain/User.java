@@ -32,16 +32,14 @@ public class User {
     private String nickname;
 
     @Column(name = "create_date")
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @Column(name = "modified_date")
-    private LocalDateTime modifiedDate;
-
-    @OneToMany(mappedBy = "writer", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Task> tasks = new ArrayList<>();
+    private LocalDateTime modifiedDate = LocalDateTime.now();
 
     public void update(String nickname, String password) {
         this.nickname = nickname;
         this.password = password;
+        this.modifiedDate = LocalDateTime.now();
     }
 }

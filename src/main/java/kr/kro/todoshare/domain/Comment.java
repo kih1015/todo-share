@@ -24,10 +24,10 @@ public class Comment {
     private String content;
 
     @Column(name = "create_date")
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @Column(name = "modified_date")
-    private LocalDateTime modifiedDate;
+    private LocalDateTime modifiedDate = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "writer")
@@ -39,5 +39,6 @@ public class Comment {
 
     public void update(String content) {
         this.content = content;
+        this.modifiedDate = LocalDateTime.now();
     }
 }
