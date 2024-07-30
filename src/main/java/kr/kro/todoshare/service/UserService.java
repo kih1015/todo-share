@@ -18,18 +18,22 @@ public class UserService {
 
     @Transactional
     public UserResponse create(UserCreateRequest userCreateRequest) {
-        User user = User.builder().loginId(userCreateRequest.loginId()).password(userCreateRequest.password()).nickname(userCreateRequest.nickname()).build();
+        User user = User.builder()
+                .loginId(userCreateRequest.loginId())
+                .password(userCreateRequest.password())
+                .nickname(userCreateRequest.nickname())
+                .build();
         return UserResponse.fromUser(user);
     }
 
     public UserResponse getById(Long id) {
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id);
         return UserResponse.fromUser(user);
     }
 
     @Transactional
     public UserResponse update(Long id, UserUpdateRequest userUpdateRequest) {
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id);
         user.update(userUpdateRequest.nickname(), userUpdateRequest.password());
         return UserResponse.fromUser(user);
     }

@@ -18,7 +18,11 @@ public class TaskService {
 
     @Transactional
     public TaskResponse create(TaskCreateRequest taskCreateRequest) {
-        Task task = Task.builder().title(taskCreateRequest.title()).content(taskCreateRequest.content()).deadline(taskCreateRequest.deadline()).build();
+        Task task = Task.builder()
+                .title(taskCreateRequest.title())
+                .content(taskCreateRequest.content())
+                .deadline(taskCreateRequest.deadline())
+                .build();
         return TaskResponse.from(task);
     }
 

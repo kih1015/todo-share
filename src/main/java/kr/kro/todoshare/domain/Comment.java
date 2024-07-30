@@ -31,7 +31,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "writer")
-    private User user;
+    private User writer;
 
     @ManyToOne
     @JoinColumn(name = "task")

@@ -11,7 +11,7 @@ public interface TaskRepository extends Repository<Task, Long> {
 
     List<Task> findAll();
 
-    Optional<Task> findById(Long id);
+    Task findById(Long id);
 
     Task save(Task task);
 
