@@ -17,12 +17,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public UserResponse create(UserCreateRequest userCreateRequest) {
-        User user = User.builder()
-                .loginId(userCreateRequest.loginId())
-                .password(userCreateRequest.password())
-                .nickname(userCreateRequest.nickname())
-                .build();
+    public UserResponse create(UserCreateRequest request) {
+        User user = User.from(request);
         return UserResponse.from(userRepository.save(user));
     }
 
@@ -32,9 +28,9 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse update(Long id, UserUpdateRequest userUpdateRequest) {
+    public UserResponse update(Long id, UserUpdateRequest request) {
         User user = userRepository.findById(id);
-        user.update(userUpdateRequest.nickname(), userUpdateRequest.password());
+        user.update(request.nickname(), request.password());
         return UserResponse.from(user);
     }
 

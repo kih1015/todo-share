@@ -21,12 +21,8 @@ public class CommentService {
     private final TaskRepository taskRepository;
 
     @Transactional
-    public CommentResponse create(CommentCreateRequest commentCreateRequest) {
-        Comment comment = Comment.builder()
-                .content(commentCreateRequest.content())
-                .writer(userRepository.findById(commentCreateRequest.writer()))
-                .task(taskRepository.findById(commentCreateRequest.task()))
-                .build();
+    public CommentResponse create(CommentCreateRequest request) {
+        Comment comment = Comment.of(request, userRepository.findById(request.writer()), taskRepository.findById(request.task()));
         return CommentResponse.from(commentRepository.save(comment));
     }
 
@@ -36,9 +32,9 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponse update(Long id, CommentUpdateRequest commentUpdateRequest) {
+    public CommentResponse update(Long id, CommentUpdateRequest request) {
         Comment comment = commentRepository.findById(id);
-        comment.update(commentUpdateRequest.content());
+        comment.update(request.content());
         return CommentResponse.from(comment);
     }
 

@@ -20,11 +20,8 @@ public class LikeService {
     private final TaskRepository taskRepository;
 
     @Transactional
-    public LikeResponse create(LikeCreateRequest likeCreateRequest) {
-        Like like = Like.builder()
-                .user(userRepository.findById(likeCreateRequest.user()))
-                .task(taskRepository.findById(likeCreateRequest.task()))
-                .build();
+    public LikeResponse create(LikeCreateRequest request) {
+        Like like = Like.of(userRepository.findById(request.user()), taskRepository.findById(request.task()));
         return LikeResponse.from(likeRepository.save(like));
     }
 

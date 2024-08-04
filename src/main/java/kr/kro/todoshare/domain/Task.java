@@ -1,6 +1,7 @@
 package kr.kro.todoshare.domain;
 
 import jakarta.persistence.*;
+import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,10 +34,10 @@ public class Task {
     private LocalDateTime deadline;
 
     @Column(name = "create_date")
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate;
 
     @Column(name = "modified_date")
-    private LocalDateTime modifiedDate = LocalDateTime.now();
+    private LocalDateTime modifiedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer")
@@ -48,5 +49,17 @@ public class Task {
         this.deadline = deadline;
         this.completed = completed;
         this.modifiedDate = LocalDateTime.now();
+    }
+
+    public static Task of(TaskCreateRequest request, User writer) {
+        return Task.builder()
+                .title(request.title())
+                .content(request.content())
+                .completed(false)
+                .deadline(request.deadline())
+                .createdDate(LocalDateTime.now())
+                .modifiedDate(LocalDateTime.now())
+                .writer(writer)
+                .build();
     }
 }

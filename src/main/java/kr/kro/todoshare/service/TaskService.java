@@ -6,6 +6,7 @@ import kr.kro.todoshare.controller.dto.request.TaskUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.TaskResponse;
 import kr.kro.todoshare.domain.Task;
 import kr.kro.todoshare.repository.TaskRepository;
+import kr.kro.todoshare.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +16,11 @@ import org.springframework.stereotype.Service;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public TaskResponse create(TaskCreateRequest taskCreateRequest) {
-        Task task = Task.builder()
-                .title(taskCreateRequest.title())
-                .content(taskCreateRequest.content())
-                .deadline(taskCreateRequest.deadline())
-                .build();
+    public TaskResponse create(TaskCreateRequest request) {
+        Task task = Task.of(request, userRepository.findById(request.writer()));
         return TaskResponse.from(taskRepository.save(task));
     }
 
@@ -32,9 +30,9 @@ public class TaskService {
     }
 
     @Transactional
-    public TaskResponse update(Long id, TaskUpdateRequest taskUpdateRequest) {
+    public TaskResponse update(Long id, TaskUpdateRequest request) {
         Task task = taskRepository.findById(id);
-        task.update(taskUpdateRequest.title(), taskUpdateRequest.content(), taskUpdateRequest.deadline(), taskUpdateRequest.completed());
+        task.update(request.title(), request.content(), request.deadline(), request.completed());
         return TaskResponse.from(task);
     }
 
