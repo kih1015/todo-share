@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -35,6 +36,9 @@ public class User {
 
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "writer")
+    private List<Task> tasks;
 
     public void update(String nickname, String password) {
         this.nickname = nickname;
