@@ -1,5 +1,7 @@
 package kr.kro.todoshare.controller;
 
+import jakarta.servlet.http.HttpSession;
+import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
 import kr.kro.todoshare.controller.dto.request.UserCreateRequest;
 import kr.kro.todoshare.controller.dto.request.UserUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.UserResponse;
@@ -27,6 +29,13 @@ public class UserController {
     public ResponseEntity<UserResponse> getUsers(@PathVariable Long id) {
         UserResponse response = userService.getById(id);
         return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody UserLoginRequest request, HttpSession session) {
+        session.setAttribute("userId", userService.login(request));
+        session.setMaxInactiveInterval(1800);
+        return "success";
     }
 
     @PutMapping("/{id}")

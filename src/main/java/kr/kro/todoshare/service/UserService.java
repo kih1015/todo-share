@@ -2,6 +2,7 @@ package kr.kro.todoshare.service;
 
 import jakarta.transaction.Transactional;
 import kr.kro.todoshare.controller.dto.request.UserCreateRequest;
+import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
 import kr.kro.todoshare.controller.dto.request.UserUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.UserResponse;
 import kr.kro.todoshare.domain.User;
@@ -37,5 +38,13 @@ public class UserService {
     @Transactional
     public void delete(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public Long login(UserLoginRequest request) {
+        User user = userRepository.findByLoginId(request.loginId()).orElseThrow();
+        if (!request.password().equals(user.getPassword())) {
+            throw new RuntimeException();
+        }
+        return user.getId();
     }
 }
