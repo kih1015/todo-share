@@ -32,7 +32,7 @@ public class User {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "create_date")
+    @Column(name = "created_date")
     private LocalDateTime createdDate;
 
     @Column(name = "modified_date")

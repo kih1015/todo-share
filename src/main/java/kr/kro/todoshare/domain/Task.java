@@ -35,7 +35,7 @@ public class Task {
     @Column(name = "deadline")
     private LocalDateTime deadline;
 
-    @Column(name = "create_date")
+    @Column(name = "created_date")
     private LocalDateTime createdDate;
 
     @Column(name = "modified_date")

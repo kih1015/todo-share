@@ -24,7 +24,7 @@ public class Comment {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "create_date")
+    @Column(name = "created_date")
     private LocalDateTime createdDate;
 
     @Column(name = "modified_date")
