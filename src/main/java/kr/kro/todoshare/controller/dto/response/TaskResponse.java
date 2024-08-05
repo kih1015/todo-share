@@ -35,7 +35,7 @@ public record TaskResponse(
         );
     }
 
-    private record WriterInfo(
+    public record WriterInfo(
             Long id,
             String nickname
     ) {
