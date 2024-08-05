@@ -1,7 +1,6 @@
 package kr.kro.todoshare.domain;
 
 import jakarta.persistence.*;
-import kr.kro.todoshare.controller.dto.request.LikeCreateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

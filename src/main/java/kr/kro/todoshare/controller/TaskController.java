@@ -1,7 +1,6 @@
 package kr.kro.todoshare.controller;
 
 import io.swagger.v3.oas.annotations.Parameter;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kr.kro.todoshare.controller.dto.request.TaskCompletedUpdateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
