@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -45,10 +46,10 @@ public class Task {
     private User writer;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "task")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "task")
-    private List<Like> likes;
+    private List<Like> likes = new ArrayList<>();
 
     public void update(String title, String content, LocalDateTime deadline, Boolean completed) {
         this.title = title;
@@ -67,6 +68,8 @@ public class Task {
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
                 .writer(writer)
+                .comments(new ArrayList<>())
+                .likes(new ArrayList<>())
                 .build();
     }
 }

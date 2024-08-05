@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,7 +39,7 @@ public class User {
     private LocalDateTime modifiedDate;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "writer")
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     public void update(String nickname, String password) {
         this.nickname = nickname;
@@ -53,6 +54,7 @@ public class User {
                 .nickname(request.nickname())
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
+                .tasks(new ArrayList<>())
                 .build();
     }
 }
