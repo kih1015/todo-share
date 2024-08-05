@@ -12,6 +12,8 @@ import kr.kro.todoshare.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -29,6 +31,11 @@ public class TaskService {
     public TaskResponse getById(Long id) {
         Task task = taskRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         return TaskResponse.from(task);
+    }
+
+    public List<TaskResponse> getAll() {
+        List<Task> tasks = taskRepository.findAll();
+        return tasks.stream().map(TaskResponse::from).toList();
     }
 
     @Transactional

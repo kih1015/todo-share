@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
@@ -40,6 +41,12 @@ public class TaskController {
             @PathVariable Long id
     ) {
         TaskResponse response = taskService.getById(id);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<TaskResponse>> getTasks() {
+        List<TaskResponse> response = taskService.getAll();
         return ResponseEntity.ok().body(response);
     }
 
