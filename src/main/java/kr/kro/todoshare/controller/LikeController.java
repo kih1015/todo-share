@@ -1,6 +1,6 @@
 package kr.kro.todoshare.controller;
 
-import jakarta.servlet.http.HttpSession;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import kr.kro.todoshare.controller.dto.request.LikeCreateRequest;
 import kr.kro.todoshare.controller.dto.response.LikeResponse;
@@ -19,8 +19,11 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping()
-    public ResponseEntity<LikeResponse> createLike(@Valid @RequestBody LikeCreateRequest request, HttpSession session) {
-        LikeResponse response = likeService.create(request, (Long) session.getAttribute("userId"));
+    public ResponseEntity<LikeResponse> createLike(
+            @Valid @RequestBody LikeCreateRequest request,
+            @Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long userId
+    ) {
+        LikeResponse response = likeService.create(request, userId);
         return ResponseEntity.created(URI.create("/likes/" + response.id())).body(response);
     }
 }

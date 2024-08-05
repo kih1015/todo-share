@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import kr.kro.todoshare.controller.dto.request.LikeCreateRequest;
 import kr.kro.todoshare.controller.dto.response.LikeResponse;
 import kr.kro.todoshare.domain.Like;
+import kr.kro.todoshare.domain.Task;
+import kr.kro.todoshare.exception.ConflictException;
 import kr.kro.todoshare.repository.LikeRepository;
 import kr.kro.todoshare.repository.TaskRepository;
 import kr.kro.todoshare.repository.UserRepository;
@@ -21,17 +23,13 @@ public class LikeService {
 
     @Transactional
     public LikeResponse create(LikeCreateRequest request, Long userId) {
-        Like like = Like.of(userRepository.findById(userId), taskRepository.findById(request.task()));
+        Task task = taskRepository.findById(request.task());
+        if (likeRepository.findAllByTask(task)
+                .stream()
+                .anyMatch(like -> like.getUser().getId().equals(userId))) {
+            throw new ConflictException();
+        }
+        Like like = Like.of(userRepository.findById(userId), task);
         return LikeResponse.from(likeRepository.save(like));
-    }
-
-    public LikeResponse getById(Long id) {
-        Like like = likeRepository.findById(id);
-        return LikeResponse.from(like);
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        likeRepository.deleteById(id);
     }
 }
