@@ -1,6 +1,7 @@
 package kr.kro.todoshare.controller;
 
-import jakarta.servlet.http.HttpSession;
+import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import kr.kro.todoshare.controller.dto.request.CommentCreateRequest;
 import kr.kro.todoshare.controller.dto.request.CommentUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.CommentResponse;
@@ -19,13 +20,13 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping()
-    public ResponseEntity<CommentResponse> createComment(@RequestBody CommentCreateRequest request, HttpSession session) {
-        CommentResponse response = commentService.create(request, (Long) session.getAttribute("userId"));
+    public ResponseEntity<CommentResponse> createComment(@Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long writerId, @Valid @RequestBody CommentCreateRequest request) {
+        CommentResponse response = commentService.create(request, writerId);
         return ResponseEntity.created(URI.create("/comments/" + response.id())).body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentResponse> updateComment(@PathVariable Long id, @RequestBody CommentUpdateRequest request) {
+    public ResponseEntity<CommentResponse> updateComment(@PathVariable Long id, @Valid @RequestBody CommentUpdateRequest request) {
         CommentResponse response = commentService.update(id, request);
         return ResponseEntity.ok().body(response);
     }

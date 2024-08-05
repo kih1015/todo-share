@@ -1,6 +1,7 @@
 package kr.kro.todoshare.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import kr.kro.todoshare.controller.dto.request.TaskCompletedUpdateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskUpdateRequest;
@@ -20,7 +21,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping()
-    public ResponseEntity<TaskResponse> createTask(@RequestBody TaskCreateRequest request, HttpSession session) {
+    public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody TaskCreateRequest request, HttpSession session) {
         TaskResponse response = taskService.create(request, (Long) session.getAttribute("userId"));
         return ResponseEntity.created(URI.create("/tasks/" + response.id())).body(response);
     }
@@ -32,13 +33,13 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @RequestBody TaskUpdateRequest request) {
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @Valid @RequestBody TaskUpdateRequest request) {
         TaskResponse response = taskService.update(id, request);
         return ResponseEntity.ok().body(response);
     }
 
     @PutMapping("/{id}/completed")
-    public ResponseEntity<TaskResponse> updateTaskCompleted(@PathVariable Long id, @RequestBody TaskCompletedUpdateRequest request) {
+    public ResponseEntity<TaskResponse> updateTaskCompleted(@PathVariable Long id, @Valid @RequestBody TaskCompletedUpdateRequest request) {
         TaskResponse response = taskService.update(id, request);
         return ResponseEntity.ok().body(response);
     }

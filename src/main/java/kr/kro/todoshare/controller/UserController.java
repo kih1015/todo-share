@@ -1,6 +1,7 @@
 package kr.kro.todoshare.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
 import kr.kro.todoshare.controller.dto.request.UserCreateRequest;
 import kr.kro.todoshare.controller.dto.request.UserUpdateRequest;
@@ -20,26 +21,26 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping()
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserCreateRequest request) {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserCreateRequest request) {
         UserResponse response = userService.create(request);
         return ResponseEntity.created(URI.create("/users/" + response.id())).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUsers(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> getUsers(@Valid @PathVariable Long id) {
         UserResponse response = userService.getById(id);
         return ResponseEntity.ok().body(response);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserLoginRequest request, HttpSession session) {
+    public String login(@Valid @RequestBody UserLoginRequest request, HttpSession session) {
         session.setAttribute("userId", userService.login(request));
         session.setMaxInactiveInterval(1800);
         return "success";
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest request) {
         UserResponse response = userService.update(id, request);
         return ResponseEntity.ok().body(response);
     }
