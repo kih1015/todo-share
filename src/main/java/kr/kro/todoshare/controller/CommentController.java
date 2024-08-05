@@ -1,5 +1,6 @@
 package kr.kro.todoshare.controller;
 
+import jakarta.servlet.http.HttpSession;
 import kr.kro.todoshare.controller.dto.request.CommentCreateRequest;
 import kr.kro.todoshare.controller.dto.request.CommentUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.CommentResponse;
@@ -18,8 +19,8 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping()
-    public ResponseEntity<CommentResponse> createComment(@RequestBody CommentCreateRequest request) {
-        CommentResponse response = commentService.create(request);
+    public ResponseEntity<CommentResponse> createComment(@RequestBody CommentCreateRequest request, HttpSession session) {
+        CommentResponse response = commentService.create(request, (Long) session.getAttribute("userId"));
         return ResponseEntity.created(URI.create("/comments/" + response.id())).body(response);
     }
 

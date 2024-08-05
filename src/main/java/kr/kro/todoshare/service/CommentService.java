@@ -21,8 +21,8 @@ public class CommentService {
     private final TaskRepository taskRepository;
 
     @Transactional
-    public CommentResponse create(CommentCreateRequest request) {
-        Comment comment = Comment.of(request, userRepository.findById(request.writer()), taskRepository.findById(request.task()));
+    public CommentResponse create(CommentCreateRequest request, Long writerId) {
+        Comment comment = Comment.of(request, userRepository.findById(writerId), taskRepository.findById(request.task()));
         return CommentResponse.from(commentRepository.save(comment));
     }
 
