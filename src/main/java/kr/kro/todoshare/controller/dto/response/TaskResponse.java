@@ -1,8 +1,11 @@
 package kr.kro.todoshare.controller.dto.response;
 
+import kr.kro.todoshare.domain.Comment;
 import kr.kro.todoshare.domain.Task;
+import kr.kro.todoshare.domain.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record TaskResponse(
         Long id,
@@ -12,7 +15,8 @@ public record TaskResponse(
         LocalDateTime deadline,
         LocalDateTime createdDate,
         LocalDateTime modifiedDate,
-        Long writer
+        WriterInfo writer,
+        List<CommentInfo> comments
 ) {
 
     public static TaskResponse from(Task task) {
@@ -24,7 +28,37 @@ public record TaskResponse(
                 task.getDeadline(),
                 task.getCreatedDate(),
                 task.getModifiedDate(),
-                task.getWriter().getId()
+                WriterInfo.from(task.getWriter()),
+                task.getComments().stream().map(CommentInfo::from).toList()
         );
+    }
+
+    private record WriterInfo(
+            Long id,
+            String nickname
+    ) {
+
+        public static WriterInfo from(User writer) {
+            return new WriterInfo(writer.getId(), writer.getNickname());
+        }
+    }
+
+    private record CommentInfo(
+            Long id,
+            String content,
+            LocalDateTime createdDate,
+            LocalDateTime modifiedDate,
+            WriterInfo writer
+    ) {
+
+        public static CommentInfo from(Comment comment) {
+            return new CommentInfo(
+                    comment.getId(),
+                    comment.getContent(),
+                    comment.getCreatedDate(),
+                    comment.getModifiedDate(),
+                    WriterInfo.from(comment.getWriter())
+            );
+        }
     }
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "task")
@@ -42,6 +43,9 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer")
     private User writer;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "task")
+    private List<Comment> comments;
 
     public void update(String title, String content, LocalDateTime deadline, Boolean completed) {
         this.title = title;
