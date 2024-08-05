@@ -16,7 +16,8 @@ public record TaskResponse(
         LocalDateTime createdDate,
         LocalDateTime modifiedDate,
         WriterInfo writer,
-        List<CommentInfo> comments
+        List<CommentInfo> comments,
+        Long likesNum
 ) {
 
     public static TaskResponse from(Task task) {
@@ -29,7 +30,8 @@ public record TaskResponse(
                 task.getCreatedDate(),
                 task.getModifiedDate(),
                 WriterInfo.from(task.getWriter()),
-                task.getComments().stream().map(CommentInfo::from).toList()
+                task.getComments().stream().map(CommentInfo::from).toList(),
+                (long) task.getLikes().size()
         );
     }
 

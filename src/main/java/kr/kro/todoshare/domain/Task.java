@@ -47,6 +47,9 @@ public class Task {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "task")
     private List<Comment> comments;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "task")
+    private List<Like> likes;
+
     public void update(String title, String content, LocalDateTime deadline, Boolean completed) {
         this.title = title;
         this.content = content;
