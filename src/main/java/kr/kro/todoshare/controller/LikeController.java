@@ -22,10 +22,4 @@ public class LikeController {
         LikeResponse response = likeService.create(request, (Long) session.getAttribute("userId"));
         return ResponseEntity.created(URI.create("/likes/" + response.id())).body(response);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<LikeResponse> deleteLike(@PathVariable Long id) {
-        likeService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
 }
