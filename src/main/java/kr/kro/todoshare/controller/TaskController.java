@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.kro.todoshare.controller.dto.request.TaskCompletedUpdateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+@Tag(name = "Task API", description = "할일 관련 api")
 @RestController
 @RequestMapping("/tasks")
 @AllArgsConstructor
