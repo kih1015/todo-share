@@ -6,6 +6,7 @@ import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
 import kr.kro.todoshare.controller.dto.request.UserUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.UserResponse;
 import kr.kro.todoshare.domain.User;
+import kr.kro.todoshare.exception.ResourceNotFoundException;
 import kr.kro.todoshare.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,13 @@ public class UserService {
     }
 
     public UserResponse getById(Long id) {
-        User user = userRepository.findById(id);
+        User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         return UserResponse.from(user);
     }
 
     @Transactional
     public UserResponse update(Long id, UserUpdateRequest request) {
-        User user = userRepository.findById(id);
+        User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         user.update(request.nickname(), request.password());
         return UserResponse.from(user);
     }

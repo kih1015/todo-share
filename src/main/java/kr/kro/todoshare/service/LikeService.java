@@ -6,6 +6,7 @@ import kr.kro.todoshare.controller.dto.response.LikeResponse;
 import kr.kro.todoshare.domain.Like;
 import kr.kro.todoshare.domain.Task;
 import kr.kro.todoshare.exception.ConflictException;
+import kr.kro.todoshare.exception.ResourceNotFoundException;
 import kr.kro.todoshare.repository.LikeRepository;
 import kr.kro.todoshare.repository.TaskRepository;
 import kr.kro.todoshare.repository.UserRepository;
@@ -23,13 +24,13 @@ public class LikeService {
 
     @Transactional
     public LikeResponse create(LikeCreateRequest request, Long userId) {
-        Task task = taskRepository.findById(request.task());
+        Task task = taskRepository.findById(request.task()).orElseThrow(ResourceNotFoundException::new);
         if (likeRepository.findAllByTask(task)
                 .stream()
                 .anyMatch(like -> like.getUser().getId().equals(userId))) {
             throw new ConflictException();
         }
-        Like like = Like.of(userRepository.findById(userId), task);
+        Like like = Like.of(userRepository.findById(userId).orElseThrow(ResourceNotFoundException::new), task);
         return LikeResponse.from(likeRepository.save(like));
     }
 }

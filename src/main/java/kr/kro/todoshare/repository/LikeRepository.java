@@ -10,9 +10,5 @@ public interface LikeRepository extends Repository<Like, Long> {
 
     List<Like> findAllByTask(Task task);
 
-    Like findById(Long id);
-
     Like save(Like like);
-
-    void deleteById(Long id);
 }
