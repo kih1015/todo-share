@@ -1,5 +1,6 @@
 package kr.kro.todoshare.controller;
 
+import jakarta.servlet.http.HttpSession;
 import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.TaskResponse;
@@ -18,8 +19,8 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping()
-    public ResponseEntity<TaskResponse> createTask(@RequestBody TaskCreateRequest request) {
-        TaskResponse response = taskService.create(request);
+    public ResponseEntity<TaskResponse> createTask(@RequestBody TaskCreateRequest request, HttpSession session) {
+        TaskResponse response = taskService.create(request, (Long) session.getAttribute("userId"));
         return ResponseEntity.created(URI.create("/tasks/" + response.id())).body(response);
     }
 

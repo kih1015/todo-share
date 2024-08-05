@@ -19,8 +19,8 @@ public class TaskService {
     private final UserRepository userRepository;
 
     @Transactional
-    public TaskResponse create(TaskCreateRequest request) {
-        Task task = Task.of(request, userRepository.findById(request.writer()));
+    public TaskResponse create(TaskCreateRequest request, Long writerId) {
+        Task task = Task.of(request, userRepository.findById(writerId));
         return TaskResponse.from(taskRepository.save(task));
     }
 
