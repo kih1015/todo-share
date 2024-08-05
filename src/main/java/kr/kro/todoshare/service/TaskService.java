@@ -1,6 +1,7 @@
 package kr.kro.todoshare.service;
 
 import jakarta.transaction.Transactional;
+import kr.kro.todoshare.controller.dto.request.TaskCompletedUpdateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.TaskResponse;
@@ -33,6 +34,13 @@ public class TaskService {
     public TaskResponse update(Long id, TaskUpdateRequest request) {
         Task task = taskRepository.findById(id);
         task.update(request.title(), request.content(), request.deadline(), request.completed());
+        return TaskResponse.from(task);
+    }
+
+    @Transactional
+    public TaskResponse update(Long id, TaskCompletedUpdateRequest request) {
+        Task task = taskRepository.findById(id);
+        task.update(request.completed());
         return TaskResponse.from(task);
     }
 

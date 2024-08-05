@@ -1,6 +1,7 @@
 package kr.kro.todoshare.controller;
 
 import jakarta.servlet.http.HttpSession;
+import kr.kro.todoshare.controller.dto.request.TaskCompletedUpdateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.TaskResponse;
@@ -32,6 +33,12 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @RequestBody TaskUpdateRequest request) {
+        TaskResponse response = taskService.update(id, request);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PutMapping("/{id}/completed")
+    public ResponseEntity<TaskResponse> updateTaskCompleted(@PathVariable Long id, @RequestBody TaskCompletedUpdateRequest request) {
         TaskResponse response = taskService.update(id, request);
         return ResponseEntity.ok().body(response);
     }
