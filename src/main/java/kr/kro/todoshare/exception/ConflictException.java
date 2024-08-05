@@ -1,4 +1,10 @@
 package kr.kro.todoshare.exception;
 
-public class ConflictException extends RuntimeException{
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+public class ConflictException extends RuntimeException {
+    private String message;
 }

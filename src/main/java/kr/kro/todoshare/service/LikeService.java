@@ -28,7 +28,7 @@ public class LikeService {
         if (likeRepository.findAllByTask(task)
                 .stream()
                 .anyMatch(like -> like.getUser().getId().equals(userId))) {
-            throw new ConflictException();
+            throw new ConflictException("이미 좋아요를 눌렀습니다.");
         }
         Like like = Like.of(userRepository.findById(userId).orElseThrow(ResourceNotFoundException::new), task);
         return LikeResponse.from(likeRepository.save(like));

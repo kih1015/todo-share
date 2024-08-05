@@ -6,6 +6,7 @@ import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
 import kr.kro.todoshare.controller.dto.request.UserUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.UserResponse;
 import kr.kro.todoshare.domain.User;
+import kr.kro.todoshare.exception.ConflictException;
 import kr.kro.todoshare.exception.ResourceNotFoundException;
 import kr.kro.todoshare.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,12 @@ public class UserService {
 
     @Transactional
     public UserResponse create(UserCreateRequest request) {
+        if (userRepository.findAll().stream().anyMatch(user -> user.getLoginId().equals(request.loginId()))) {
+            throw new ConflictException("로그인 ID가 중복됩니다.");
+        }
+        if (userRepository.findAll().stream().anyMatch(user -> user.getNickname().equals(request.nickname()))) {
+            throw new ConflictException("닉네임이 중복됩니다.");
+        }
         User user = User.from(request);
         return UserResponse.from(userRepository.save(user));
     }

@@ -36,4 +36,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Void> accessDeniedException(AccessDeniedException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<String> conflictException(ConflictException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
 }

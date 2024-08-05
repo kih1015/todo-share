@@ -1,4 +1,4 @@
 package kr.kro.todoshare.exception;
 
-public class ResourceNotFoundException extends RuntimeException{
+public class ResourceNotFoundException extends RuntimeException {
 }
