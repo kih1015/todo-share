@@ -23,18 +23,18 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Void> resourceNotFoundException(ResourceNotFoundException e) {
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<String> resourceNotFoundException(ResourceNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 자원이 존재하지 않습니다.");
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Void> authenticationException(AuthenticationException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    public ResponseEntity<String> authenticationException(AuthenticationException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Void> accessDeniedException(AccessDeniedException e) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    public ResponseEntity<String> accessDeniedException(AccessDeniedException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근이 제한됩니다.");
     }
 
     @ExceptionHandler(ConflictException.class)
