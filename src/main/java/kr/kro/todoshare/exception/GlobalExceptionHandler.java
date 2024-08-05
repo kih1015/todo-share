@@ -41,4 +41,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> conflictException(ConflictException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
+
+    @ExceptionHandler(LoginFailException.class)
+    public ResponseEntity<String> passwordFailException(LoginFailException e) {
+        return ResponseEntity.badRequest().body("아이디 또는 패스워드가 틀립니다.");
+    }
 }

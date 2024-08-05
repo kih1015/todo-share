@@ -7,6 +7,7 @@ import kr.kro.todoshare.controller.dto.request.UserUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.UserResponse;
 import kr.kro.todoshare.domain.User;
 import kr.kro.todoshare.exception.ConflictException;
+import kr.kro.todoshare.exception.LoginFailException;
 import kr.kro.todoshare.exception.ResourceNotFoundException;
 import kr.kro.todoshare.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -49,9 +50,9 @@ public class UserService {
     }
 
     public Long login(UserLoginRequest request) {
-        User user = userRepository.findByLoginId(request.loginId()).orElseThrow();
+        User user = userRepository.findByLoginId(request.loginId()).orElseThrow(LoginFailException::new);
         if (!request.password().equals(user.getPassword())) {
-            throw new RuntimeException();
+            throw new LoginFailException();
         }
         return user.getId();
     }
