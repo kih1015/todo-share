@@ -41,6 +41,12 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "writer")
     private List<Task> tasks = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "writer")
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    private List<Like> likes = new ArrayList<>();
+
     public void update(String nickname, String password) {
         this.nickname = nickname;
         this.password = password;
@@ -55,6 +61,8 @@ public class User {
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
                 .tasks(new ArrayList<>())
+                .likes(new ArrayList<>())
+                .comments(new ArrayList<>())
                 .build();
     }
 }
