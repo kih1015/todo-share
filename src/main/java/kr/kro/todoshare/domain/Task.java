@@ -61,6 +61,7 @@ public class Task {
 
     public void update(Boolean completed) {
         this.completed = completed;
+        this.modifiedDate = LocalDateTime.now();
     }
 
     public static Task of(TaskCreateRequest request, User writer) {
