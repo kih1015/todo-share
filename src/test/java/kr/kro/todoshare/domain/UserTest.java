@@ -1,14 +1,12 @@
 package kr.kro.todoshare.domain;
 
 import kr.kro.todoshare.controller.dto.request.UserCreateRequest;
-import org.assertj.core.api.AbstractBigDecimalAssert;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -37,7 +35,6 @@ class UserTest {
         // then
         assertThat(user.getNickname()).isEqualTo(newNickname);
         assertThat(user.getPassword()).isEqualTo(newPassword);
-        assertThat(user.getModifiedDate()).isNotNull();
         assertThat(user.getModifiedDate()).isAfter(user.getCreatedDate());
     }
 
