@@ -5,6 +5,7 @@ import kr.kro.todoshare.controller.dto.request.CommentUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.CommentResponse;
 import kr.kro.todoshare.domain.Comment;
 import kr.kro.todoshare.exception.ResourceNotFoundException;
+import kr.kro.todoshare.mapper.CommentMapper;
 import kr.kro.todoshare.repository.CommentRepository;
 import kr.kro.todoshare.repository.TaskRepository;
 import kr.kro.todoshare.repository.UserRepository;
@@ -20,27 +21,24 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
+    private final CommentMapper commentMapper;
 
     @Transactional
-    public CommentResponse create(CommentCreateRequest request, Long writerId) {
-        Comment comment = Comment.of(
-                request,
-                userRepository.findById(writerId).orElseThrow(ResourceNotFoundException::new),
-                taskRepository.findById(request.task()).orElseThrow(ResourceNotFoundException::new)
-        );
-        return CommentResponse.from(commentRepository.save(comment));
+    public CommentResponse create(Long writerId, CommentCreateRequest request) {
+        Comment comment = commentMapper.toEntity(writerId, request);
+        return commentMapper.toResponse(commentRepository.save(comment));
     }
 
     public CommentResponse getById(Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
-        return CommentResponse.from(comment);
+        return commentMapper.toResponse(comment);
     }
 
     @Transactional
     public CommentResponse update(Long id, CommentUpdateRequest request) {
         Comment comment = commentRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         comment.update(request.content());
-        return CommentResponse.from(comment);
+        return commentMapper.toResponse(comment);
     }
 
     @Transactional

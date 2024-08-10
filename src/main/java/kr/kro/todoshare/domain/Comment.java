@@ -2,10 +2,7 @@ package kr.kro.todoshare.domain;
 
 import jakarta.persistence.*;
 import kr.kro.todoshare.controller.dto.request.CommentCreateRequest;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -41,15 +38,5 @@ public class Comment {
     public void update(String content) {
         this.content = content;
         this.modifiedDate = LocalDateTime.now();
-    }
-
-    public static Comment of(CommentCreateRequest request, User writer, Task task) {
-        return Comment.builder()
-                .content(request.content())
-                .writer(writer)
-                .task(task)
-                .createdDate(LocalDateTime.now())
-                .modifiedDate(LocalDateTime.now())
-                .build();
     }
 }

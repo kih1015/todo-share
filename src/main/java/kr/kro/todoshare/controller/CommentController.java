@@ -48,7 +48,7 @@ public class CommentController {
         if (writerId == null) {
             throw new AuthenticationException();
         }
-        CommentResponse response = commentService.create(request, writerId);
+        CommentResponse response = commentService.create(writerId, request);
         return ResponseEntity.created(URI.create("/comments/" + response.id())).body(response);
     }
 
