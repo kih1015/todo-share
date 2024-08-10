@@ -49,7 +49,7 @@ public class TaskController {
         if (userId == null) {
             throw new AuthenticationException();
         }
-        TaskResponse response = taskService.create(request, userId);
+        TaskResponse response = taskService.create(userId, request);
         return ResponseEntity.created(URI.create("/tasks/" + response.id())).body(response);
     }
 
