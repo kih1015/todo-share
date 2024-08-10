@@ -22,13 +22,17 @@ public class CommentMapper {
                 .build();
     }
 
+    private CommentResponse.WriterInfo toWriterInfo(User writer) {
+        return new CommentResponse.WriterInfo(writer.getId(), writer.getNickname());
+    }
+
     public CommentResponse toResponse(Comment comment) {
         return new CommentResponse(
                 comment.getId(),
                 comment.getContent(),
                 comment.getCreatedDate(),
                 comment.getModifiedDate(),
-                comment.getWriter().getId(),
+                toWriterInfo(comment.getWriter()),
                 comment.getTask().getId()
         );
     }

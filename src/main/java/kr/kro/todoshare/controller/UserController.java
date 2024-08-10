@@ -13,7 +13,6 @@ import kr.kro.todoshare.controller.dto.request.UserCreateRequest;
 import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
 import kr.kro.todoshare.controller.dto.request.UserUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.UserResponse;
-import kr.kro.todoshare.exception.AccessDeniedException;
 import kr.kro.todoshare.exception.AuthenticationException;
 import kr.kro.todoshare.service.UserService;
 import lombok.AllArgsConstructor;

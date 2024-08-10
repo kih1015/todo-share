@@ -7,7 +7,12 @@ public record CommentResponse(
         String content,
         LocalDateTime createdDate,
         LocalDateTime modifiedDate,
-        Long writer,
+        WriterInfo writer,
         Long task
 ) {
+    public record WriterInfo(
+            Long id,
+            String nickname
+    ) {
+    }
 }

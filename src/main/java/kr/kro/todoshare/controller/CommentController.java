@@ -93,7 +93,7 @@ public class CommentController {
     }
 
     private void checkAccessAuthor(Long userId, Long id) {
-        if (!commentService.getById(id).writer().equals(userId)) {
+        if (!commentService.getById(id).writer().id().equals(userId)) {
             throw new AccessDeniedException();
         }
     }

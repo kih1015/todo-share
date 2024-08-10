@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.kro.todoshare.controller.dto.request.LikeCreateRequest;
 import kr.kro.todoshare.controller.dto.response.LikeResponse;
-import kr.kro.todoshare.exception.AccessDeniedException;
 import kr.kro.todoshare.exception.AuthenticationException;
 import kr.kro.todoshare.service.LikeService;
 import lombok.AllArgsConstructor;
