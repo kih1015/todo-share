@@ -1,6 +1,5 @@
 package kr.kro.todoshare.service;
 
-import jakarta.transaction.Transactional;
 import kr.kro.todoshare.controller.dto.request.TaskCompletedUpdateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskUpdateRequest;
@@ -9,14 +8,16 @@ import kr.kro.todoshare.domain.Task;
 import kr.kro.todoshare.exception.ResourceNotFoundException;
 import kr.kro.todoshare.repository.TaskRepository;
 import kr.kro.todoshare.repository.UserRepository;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional
-@AllArgsConstructor
+@Transactional(readOnly = true)
+@AllArgsConstructor()
 public class TaskService {
 
     private final TaskRepository taskRepository;

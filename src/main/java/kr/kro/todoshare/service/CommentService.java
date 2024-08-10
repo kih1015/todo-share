@@ -1,6 +1,5 @@
 package kr.kro.todoshare.service;
 
-import jakarta.transaction.Transactional;
 import kr.kro.todoshare.controller.dto.request.CommentCreateRequest;
 import kr.kro.todoshare.controller.dto.request.CommentUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.CommentResponse;
@@ -11,10 +10,11 @@ import kr.kro.todoshare.repository.TaskRepository;
 import kr.kro.todoshare.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
-@AllArgsConstructor
+@Transactional(readOnly = true)
+@AllArgsConstructor()
 public class CommentService {
 
     private final CommentRepository commentRepository;

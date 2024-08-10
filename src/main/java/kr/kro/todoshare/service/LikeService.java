@@ -1,6 +1,5 @@
 package kr.kro.todoshare.service;
 
-import jakarta.transaction.Transactional;
 import kr.kro.todoshare.controller.dto.request.LikeCreateRequest;
 import kr.kro.todoshare.controller.dto.response.LikeResponse;
 import kr.kro.todoshare.domain.Like;
@@ -10,12 +9,13 @@ import kr.kro.todoshare.exception.ResourceNotFoundException;
 import kr.kro.todoshare.repository.LikeRepository;
 import kr.kro.todoshare.repository.TaskRepository;
 import kr.kro.todoshare.repository.UserRepository;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
-@AllArgsConstructor
+@AllArgsConstructor()
 public class LikeService {
     
     private final LikeRepository likeRepository;

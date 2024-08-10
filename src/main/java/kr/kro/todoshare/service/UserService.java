@@ -1,6 +1,5 @@
 package kr.kro.todoshare.service;
 
-import jakarta.transaction.Transactional;
 import kr.kro.todoshare.controller.dto.request.UserCreateRequest;
 import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
 import kr.kro.todoshare.controller.dto.request.UserUpdateRequest;
@@ -10,12 +9,14 @@ import kr.kro.todoshare.exception.ConflictException;
 import kr.kro.todoshare.exception.LoginFailException;
 import kr.kro.todoshare.exception.ResourceNotFoundException;
 import kr.kro.todoshare.repository.UserRepository;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
-@AllArgsConstructor
+@Transactional(readOnly = true)
+@AllArgsConstructor()
 public class UserService {
 
     private final UserRepository userRepository;
