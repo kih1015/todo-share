@@ -46,9 +46,7 @@ public class TaskController {
             @Valid @RequestBody TaskCreateRequest request,
             @Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long userId
     ) {
-        if (userId == null) {
-            throw new AuthenticationException();
-        }
+        checkLogin(userId);
         TaskResponse response = taskService.create(userId, request);
         return ResponseEntity.created(URI.create("/tasks/" + response.id())).body(response);
     }
@@ -95,12 +93,8 @@ public class TaskController {
             @Valid @RequestBody TaskUpdateRequest request,
             @Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long writerId
     ) {
-        if (writerId == null) {
-            throw new AuthenticationException();
-        }
-        if (!taskService.getById(id).writer().id().equals(writerId)) {
-            throw new AccessDeniedException();
-        }
+        checkLogin(writerId);
+        checkAccessAuthor(writerId, id);
         TaskResponse response = taskService.update(id, request);
         return ResponseEntity.ok().body(response);
     }
@@ -123,12 +117,8 @@ public class TaskController {
             @Valid @RequestBody TaskCompletedUpdateRequest request,
             @Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long writerId
     ) {
-        if (writerId == null) {
-            throw new AuthenticationException();
-        }
-        if (!taskService.getById(id).writer().id().equals(writerId)) {
-            throw new AccessDeniedException();
-        }
+        checkLogin(writerId);
+        checkAccessAuthor(writerId, id);
         TaskResponse response = taskService.update(id, request);
         return ResponseEntity.ok().body(response);
     }
@@ -145,13 +135,21 @@ public class TaskController {
             @PathVariable Long id,
             @Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long writerId
     ) {
-        if (writerId == null) {
-            throw new AuthenticationException();
-        }
-        if (!taskService.getById(id).writer().id().equals(writerId)) {
-            throw new AccessDeniedException();
-        }
+        checkLogin(writerId);
+        checkAccessAuthor(writerId, id);
         taskService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private void checkAccessAuthor(Long userId, Long id) {
+        if (!taskService.getById(id).writer().id().equals(userId)) {
+            throw new AccessDeniedException();
+        }
+    }
+
+    private static void checkLogin(Long userId) {
+        if (userId == null) {
+            throw new AuthenticationException();
+        }
     }
 }

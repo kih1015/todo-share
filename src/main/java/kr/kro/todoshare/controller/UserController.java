@@ -13,6 +13,7 @@ import kr.kro.todoshare.controller.dto.request.UserCreateRequest;
 import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
 import kr.kro.todoshare.controller.dto.request.UserUpdateRequest;
 import kr.kro.todoshare.controller.dto.response.UserResponse;
+import kr.kro.todoshare.exception.AccessDeniedException;
 import kr.kro.todoshare.exception.AuthenticationException;
 import kr.kro.todoshare.service.UserService;
 import lombok.AllArgsConstructor;
@@ -69,9 +70,7 @@ public class UserController {
     public ResponseEntity<UserResponse> getMe(
             @Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long userId
     ) {
-        if (userId == null) {
-            throw new AuthenticationException();
-        }
+        checkLogin(userId);
         UserResponse response = userService.getById(userId);
         return ResponseEntity.ok().body(response);
     }
@@ -118,9 +117,7 @@ public class UserController {
             @Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long userId,
             @Valid @RequestBody UserUpdateRequest request
     ) {
-        if (userId == null) {
-            throw new AuthenticationException();
-        }
+        checkLogin(userId);
         UserResponse response = userService.update(userId, request);
         return ResponseEntity.ok().body(response);
     }
@@ -139,5 +136,11 @@ public class UserController {
         }
         userService.delete(userId);
         return ResponseEntity.noContent().build();
+    }
+
+    private static void checkLogin(Long userId) {
+        if (userId == null) {
+            throw new AuthenticationException();
+        }
     }
 }

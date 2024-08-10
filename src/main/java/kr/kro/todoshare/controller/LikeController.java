@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.kro.todoshare.controller.dto.request.LikeCreateRequest;
 import kr.kro.todoshare.controller.dto.response.LikeResponse;
+import kr.kro.todoshare.exception.AccessDeniedException;
 import kr.kro.todoshare.exception.AuthenticationException;
 import kr.kro.todoshare.service.LikeService;
 import lombok.AllArgsConstructor;
@@ -43,10 +44,14 @@ public class LikeController {
             @Valid @RequestBody LikeCreateRequest request,
             @Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long userId
     ) {
+        checkLogin(userId);
+        LikeResponse response = likeService.create(userId, request);
+        return ResponseEntity.created(URI.create("/likes/" + response.id())).body(response);
+    }
+
+    private static void checkLogin(Long userId) {
         if (userId == null) {
             throw new AuthenticationException();
         }
-        LikeResponse response = likeService.create(userId, request);
-        return ResponseEntity.created(URI.create("/likes/" + response.id())).body(response);
     }
 }

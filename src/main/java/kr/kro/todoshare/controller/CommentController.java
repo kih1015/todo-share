@@ -45,9 +45,7 @@ public class CommentController {
             @Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long writerId,
             @Valid @RequestBody CommentCreateRequest request
     ) {
-        if (writerId == null) {
-            throw new AuthenticationException();
-        }
+        checkLogin(writerId);
         CommentResponse response = commentService.create(writerId, request);
         return ResponseEntity.created(URI.create("/comments/" + response.id())).body(response);
     }
@@ -70,12 +68,8 @@ public class CommentController {
             @Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long writerId,
             @Valid @RequestBody CommentUpdateRequest request
     ) {
-        if (writerId == null) {
-            throw new AuthenticationException();
-        }
-        if (!commentService.getById(id).writer().equals(writerId)) {
-            throw new AccessDeniedException();
-        }
+        checkLogin(writerId);
+        checkAccessAuthor(writerId, id);
         CommentResponse response = commentService.update(id, request);
         return ResponseEntity.ok().body(response);
     }
@@ -92,13 +86,21 @@ public class CommentController {
             @Parameter(hidden = true) @SessionAttribute(name = "userId", required = false) Long writerId,
             @PathVariable Long id
     ) {
-        if (writerId == null) {
-            throw new AuthenticationException();
-        }
-        if (!commentService.getById(id).writer().equals(writerId)) {
-            throw new AccessDeniedException();
-        }
+        checkLogin(writerId);
+        checkAccessAuthor(writerId, id);
         commentService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private void checkAccessAuthor(Long userId, Long id) {
+        if (!commentService.getById(id).writer().equals(userId)) {
+            throw new AccessDeniedException();
+        }
+    }
+
+    private static void checkLogin(Long userId) {
+        if (userId == null) {
+            throw new AuthenticationException();
+        }
     }
 }
