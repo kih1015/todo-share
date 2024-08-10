@@ -5,11 +5,9 @@ import kr.kro.todoshare.controller.dto.response.LikeResponse;
 import kr.kro.todoshare.domain.Like;
 import kr.kro.todoshare.domain.Task;
 import kr.kro.todoshare.domain.User;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
 public class LikeMapper {
 
     public Like toEntity(Long userId, LikeCreateRequest request) {

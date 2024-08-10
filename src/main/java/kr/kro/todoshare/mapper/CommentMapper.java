@@ -5,13 +5,11 @@ import kr.kro.todoshare.controller.dto.response.CommentResponse;
 import kr.kro.todoshare.domain.Comment;
 import kr.kro.todoshare.domain.Task;
 import kr.kro.todoshare.domain.User;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component
-@AllArgsConstructor
 public class CommentMapper {
 
     public Comment toEntity(Long writerId, CommentCreateRequest request) {

@@ -1,7 +1,6 @@
 package kr.kro.todoshare.domain;
 
 import jakarta.persistence.*;
-import kr.kro.todoshare.controller.dto.request.UserCreateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,18 +50,5 @@ public class User {
         this.nickname = nickname;
         this.password = password;
         this.modifiedDate = LocalDateTime.now();
-    }
-
-    public static User from(UserCreateRequest request) {
-        return User.builder()
-                .loginId(request.loginId())
-                .password(request.password())
-                .nickname(request.nickname())
-                .createdDate(LocalDateTime.now())
-                .modifiedDate(LocalDateTime.now())
-                .tasks(new ArrayList<>())
-                .likes(new ArrayList<>())
-                .comments(new ArrayList<>())
-                .build();
     }
 }

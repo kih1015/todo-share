@@ -1,6 +1,7 @@
 package kr.kro.todoshare.domain;
 
 import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
+import kr.kro.todoshare.mapper.TaskMapper;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -67,13 +68,14 @@ class TaskTest {
     void of() {
         // given
         User user = mock(User.class);
+        TaskMapper taskMapper = new TaskMapper();
         TaskCreateRequest request = mock(TaskCreateRequest.class);
         when(request.title()).thenReturn("제목 테스트");
         when(request.content()).thenReturn("내용 테스트");
         when(request.deadline()).thenReturn(LocalDateTime.MAX);
 
         // when
-        Task task = Task.of(request, user);
+        Task task = taskMapper.toEntity(user.getId(), request);
 
         // then
         assertThat(task.getTitle()).isEqualTo("제목 테스트");

@@ -8,8 +8,8 @@ import kr.kro.todoshare.domain.User;
 import kr.kro.todoshare.exception.ConflictException;
 import kr.kro.todoshare.exception.LoginFailException;
 import kr.kro.todoshare.exception.ResourceNotFoundException;
+import kr.kro.todoshare.mapper.UserMapper;
 import kr.kro.todoshare.repository.UserRepository;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Transactional
     public UserResponse create(UserCreateRequest request) {
@@ -29,20 +30,20 @@ public class UserService {
         if (userRepository.findAll().stream().anyMatch(user -> user.getNickname().equals(request.nickname()))) {
             throw new ConflictException("닉네임이 중복됩니다.");
         }
-        User user = User.from(request);
-        return UserResponse.from(userRepository.save(user));
+        User user = userMapper.toEntity(request);
+        return userMapper.toResponse(userRepository.save(user));
     }
 
     public UserResponse getById(Long id) {
         User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
-        return UserResponse.from(user);
+        return userMapper.toResponse(user);
     }
 
     @Transactional
     public UserResponse update(Long id, UserUpdateRequest request) {
         User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         user.update(request.nickname(), request.password());
-        return UserResponse.from(user);
+        return userMapper.toResponse(user);
     }
 
     @Transactional

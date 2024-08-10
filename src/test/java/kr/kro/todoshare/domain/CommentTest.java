@@ -1,6 +1,7 @@
 package kr.kro.todoshare.domain;
 
 import kr.kro.todoshare.controller.dto.request.CommentCreateRequest;
+import kr.kro.todoshare.mapper.CommentMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -40,13 +41,14 @@ class CommentTest {
     @DisplayName("댓글 엔티티 생성 테스트")
     void of() {
         // given
+        CommentMapper commentMapper = new CommentMapper();
         CommentCreateRequest request = mock(CommentCreateRequest.class);
         when(request.content()).thenReturn("댓글 내용 테스트");
         User user = mock(User.class);
         Task task = mock(Task.class);
 
         // when
-        Comment comment = Comment.of(request, user, task);
+        Comment comment = commentMapper.toEntity(user.getId(), request);
 
         // then
         assertThat(comment.getContent()).isEqualTo("댓글 내용 테스트");

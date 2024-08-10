@@ -24,7 +24,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class LikeServiceTest {
@@ -85,7 +86,7 @@ class LikeServiceTest {
         when(likeRepository.save(any())).thenReturn(like);
 
         // when
-        LikeResponse response = likeService.create(request, 1L);
+        LikeResponse response = likeService.create(1L, request);
 
         // then
         assertThat(response).isNotNull();
@@ -101,7 +102,7 @@ class LikeServiceTest {
         when(likeRepository.findAllByTask(task)).thenReturn(Collections.singletonList(like));
 
         // when, then
-        assertThrows(ConflictException.class, () -> likeService.create(request, 1L));
+        assertThrows(ConflictException.class, () -> likeService.create(1L, request));
     }
 
     @Test
@@ -113,7 +114,7 @@ class LikeServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
         // when, then
-        assertThrows(ResourceNotFoundException.class, () -> likeService.create(request, 1L));
+        assertThrows(ResourceNotFoundException.class, () -> likeService.create(1L, request));
     }
 
     @Test
@@ -124,6 +125,6 @@ class LikeServiceTest {
         when(taskRepository.findById(1L)).thenReturn(Optional.empty());
 
         // when, then
-        assertThrows(ResourceNotFoundException.class, () -> likeService.create(request, 1L));
+        assertThrows(ResourceNotFoundException.class, () -> likeService.create(1L, request));
     }
 }

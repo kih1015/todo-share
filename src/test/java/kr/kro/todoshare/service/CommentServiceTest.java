@@ -1,11 +1,11 @@
 package kr.kro.todoshare.service;
 
+import kr.kro.todoshare.controller.dto.request.CommentCreateRequest;
+import kr.kro.todoshare.controller.dto.request.CommentUpdateRequest;
+import kr.kro.todoshare.controller.dto.response.CommentResponse;
 import kr.kro.todoshare.domain.Comment;
 import kr.kro.todoshare.domain.Task;
 import kr.kro.todoshare.domain.User;
-import kr.kro.todoshare.controller.dto.request.CommentCreateRequest;
-import kr.kro.todoshare.controller.dto.response.CommentResponse;
-import kr.kro.todoshare.controller.dto.request.CommentUpdateRequest;
 import kr.kro.todoshare.repository.CommentRepository;
 import kr.kro.todoshare.repository.TaskRepository;
 import kr.kro.todoshare.repository.UserRepository;
@@ -84,7 +84,7 @@ class CommentServiceTest {
         when(commentRepository.save(any())).thenReturn(comment);
 
         // when
-        CommentResponse response = commentService.create(request, 1L);
+        CommentResponse response = commentService.create(1L, request);
 
         // then
         assertThat(response).isNotNull();

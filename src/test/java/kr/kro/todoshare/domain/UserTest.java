@@ -1,6 +1,7 @@
 package kr.kro.todoshare.domain;
 
 import kr.kro.todoshare.controller.dto.request.UserCreateRequest;
+import kr.kro.todoshare.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -41,13 +42,14 @@ class UserTest {
     @Test
     void from() {
         // given
+        UserMapper userMapper = new UserMapper();
         UserCreateRequest request = mock(UserCreateRequest.class);
         when(request.loginId()).thenReturn("testLoginId");
         when(request.password()).thenReturn("testPassword");
         when(request.nickname()).thenReturn("testNickname");
 
         // when
-        User user = User.from(request);
+        User user = userMapper.toEntity(request);
 
         // then
         assertThat(user.getLoginId()).isEqualTo("testLoginId");
