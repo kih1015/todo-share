@@ -1,7 +1,6 @@
 package kr.kro.todoshare.domain;
 
 import jakarta.persistence.*;
-import kr.kro.todoshare.controller.dto.request.CommentCreateRequest;
 import lombok.*;
 
 import java.time.LocalDateTime;

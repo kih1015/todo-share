@@ -46,7 +46,7 @@ public class LikeController {
         if (userId == null) {
             throw new AuthenticationException();
         }
-        LikeResponse response = likeService.create(request, userId);
+        LikeResponse response = likeService.create(userId, request);
         return ResponseEntity.created(URI.create("/likes/" + response.id())).body(response);
     }
 }
