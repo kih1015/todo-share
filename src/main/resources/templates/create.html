@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>할 일 생성</title>
+    <link rel="stylesheet" th:href="@{/css/nav.css}" />
+    <style>
+        .error {
+            color: red;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="datetime-local"], textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<div class="navbar">
+    <a href="/" class="active">홈</a>
+    <a href="/mypage">마이 페이지</a>
+    <div class="right">
+        <div th:if="${user != null}">
+            <span style="color: white" th:text="${user.nickname} + '님 환영합니다'"></span>
+            <a href="/logout">로그아웃</a>
+        </div>
+        <div th:if="${user == null}">
+            <a href="/login">로그인</a>
+            <a href="/signup">회원가입</a>
+        </div>
+    </div>
+</div>
+<body>
+<h1>할 일 생성</h1>
+<form action="#" th:action="@{/task/create}" th:object="${taskCreateRequest}" method="post">
+    <div class="form-group">
+        <label for="title">제목:</label>
+        <input type="text" id="title" th:field="*{title}" placeholder="제목을 입력하세요"/>
+        <div class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="content">내용:</label>
+        <textarea id="content" th:field="*{content}" placeholder="내용을 입력하세요" rows="5"></textarea>
+        <div class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="deadline">마감기한:</label>
+        <input type="datetime-local" id="deadline" th:field="*{deadline}" />
+        <div class="error" th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}"></div>
+    </div>
+
+    <button type="submit">제출</button>
+</form>
+</body>
+</html>

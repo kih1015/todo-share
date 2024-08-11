@@ -1,7 +1,9 @@
 package kr.kro.todoshare.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
 import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
 import kr.kro.todoshare.controller.dto.response.TaskResponse;
 import kr.kro.todoshare.exception.AuthenticationException;
@@ -11,11 +13,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -47,6 +47,33 @@ public class ViewController {
         return "mypage";
     }
 
+    @GetMapping("/task/create")
+    public String create(Model model, @SessionAttribute(required = false) Long userId) {
+        if (userId == null) {
+            model.addAttribute("user", null);
+        } else {
+            model.addAttribute("user", userService.getById(userId));
+        }
+        model.addAttribute("taskCreateRequest", new TaskCreateRequest("","", LocalDateTime.now()));
+        return "create";
+    }
+
+    @PostMapping("/task/create")
+    public String createTask(
+            @Valid TaskCreateRequest request,
+            @SessionAttribute(name = "userId", required = false) Long userId,
+            BindingResult result
+    ) {
+        if (result.hasErrors()) {
+            return "create";
+        }
+        if (userId == null) {
+            return "redirect:/login";
+        }
+        taskService.create(userId, request);
+        return "redirect:/mypage";
+    }
+
     @GetMapping("/task/{id}")
     public String task(@PathVariable Long id, Model model, @SessionAttribute(required = false) Long userId) {
         if (userId == null) {
@@ -76,5 +103,11 @@ public class ViewController {
         session.setAttribute("userId", userService.login(request));
         session.setMaxInactiveInterval(1800);
         return "redirect:/mypage"; // Redirect to the home page upon successful login
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 }

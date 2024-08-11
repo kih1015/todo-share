@@ -20,7 +20,7 @@
         </div>
     </div>
 </div>
-<h2>내 할일 목록</h2>
+<h2 style="text-align: center">내 할일 목록</h2>
 <div class="task-container">
     <div th:each="task : ${user.task}" class="task-card">
         <a th:href="@{/task/{id}(id=${task.id})}"><h2 th:text="${task.title}">할 일 제목</h2></a>
