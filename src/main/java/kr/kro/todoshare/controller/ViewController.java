@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kr.kro.todoshare.controller.dto.request.*;
 import kr.kro.todoshare.controller.dto.response.TaskResponse;
+import kr.kro.todoshare.exception.AccessDeniedException;
 import kr.kro.todoshare.exception.AuthenticationException;
 import kr.kro.todoshare.service.CommentService;
 import kr.kro.todoshare.service.LikeService;
@@ -92,6 +93,19 @@ public class ViewController {
     ) {
         commentService.create(userId, request);
         return "redirect:/task/" + request.task().toString();
+    }
+
+    @PostMapping("/comment/delete/{id}")
+    public String deleteComment(
+            @PathVariable Long id,
+            @ModelAttribute("task") Long taskId,
+            @SessionAttribute(required = false) Long userId
+    ) {
+        if (!commentService.getById(id).writer().id().equals(userId)) {
+            throw new AccessDeniedException();
+        }
+        commentService.delete(id);
+        return "redirect:/task/" + taskId.toString();
     }
 
     @GetMapping("/login")
