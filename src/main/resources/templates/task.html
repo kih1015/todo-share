@@ -109,10 +109,16 @@
     <div class="task-deadline">마감기한: <span th:text="${task.deadline}">Deadline</span></div>
     <div class="task-likes">좋아요 수: <span th:text="${task.likesNum}">0</span></div>
     <form action="/like" method="post">
-        <div th:if="${user != null}">
+        <div th:if="${user != null && !task.writer.id.equals(user.id)}">
             <button type="submit">좋아요</button>
             <input type="text" name="task" th:value="${task.id}" hidden="hidden"/>
-            <input type="text" name="user" th:value="${user.id}" hidden="hidden"/>
+        </div>
+
+    </form>
+    <form th:action="@{/task/delete/{id}(id=${task.id})}" method="post">
+        <div th:if="${user != null && task.writer.id.equals(user.id)}">
+            <button type="submit">삭제</button>
+            <input type="text" name="task" th:value="${task.id}" hidden="hidden"/>
         </div>
     </form>
     <div class="comments">

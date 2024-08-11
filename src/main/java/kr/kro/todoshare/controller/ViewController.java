@@ -74,6 +74,19 @@ public class ViewController {
         return "redirect:/mypage";
     }
 
+    @PostMapping("/task/delete/{id}")
+    public String deleteTask(
+            @PathVariable Long id,
+            @ModelAttribute("task") Long taskId,
+            @SessionAttribute(required = false) Long userId
+    ) {
+        if (!taskService.getById(id).writer().id().equals(userId)) {
+            throw new AccessDeniedException();
+        }
+        taskService.delete(id);
+        return "redirect:/mypage";
+    }
+
     @GetMapping("/task/{id}")
     public String task(@PathVariable Long id, Model model, @SessionAttribute(required = false) Long userId) {
         if (userId == null) {
