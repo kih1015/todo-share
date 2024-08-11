@@ -111,10 +111,14 @@
     <h1 class="task-title" th:text="${task.title}">Task Title</h1>
     <div class="task-meta">
         <span th:text="${task.writer.nickname}">Writer</span> |
-        <span th:text="${task.createdDate}">Created Date</span>
+        <span th:text="${task.createdDate.toLocalDate()}">Created Date</span>
+        <span th:text="${task.createdDate().toLocalTime()}">Created Date</span>
     </div>
     <div class="task-content" th:text="${task.content}">Task Content</div>
-    <div class="task-deadline">마감기한: <span th:text="${task.deadline}">Deadline</span></div>
+    <div class="task-deadline">마감기한: <span th:text="${task.createdDate.toLocalDate()}">Created Date</span>
+        <span th:text="${task.createdDate().toLocalTime()}">Created Date</span></div>
+    <p th:class="${task.completed ? 'completed' : 'not-completed'}"
+       th:text="${task.completed ? '완료됨' : '완료되지 않음'}"></p>
     <div class="task-likes">좋아요 수: <span th:text="${task.likesNum}">0</span></div>
     <div style="display: flex">
         <form action="/like" method="post">
@@ -142,12 +146,17 @@
             <div class="comment">
                 <div class="comment-meta">
                     <span th:text="${comment.writer.nickname}">Comment Writer</span> |
-                    <span th:text="${comment.createdDate}">Comment Date</span>
+                    <span th:text="${task.createdDate.toLocalDate()}">Created Date</span>
+                    <span th:text="${task.createdDate().toLocalTime()}">Created Date</span>
                 </div>
                 <div class="comment-content" th:text="${comment.content}">Comment Content</div>
             </div>
-            <div th:if="${user.id == comment.writer.id}">
-                <form th:action="@{/comment/delete/{id}(id=${comment.id})}" method="post">
+            <div th:if="${user != null && user.id == comment.writer.id}" style="display: flex">
+                <form th:action="@{/comments/update/{id}(id=${comment.id})}" method="get">
+                    <input type="text" name="task" th:value="${task.id}" hidden="hidden"/>
+                    <button type="submit">수정</button>
+                </form>
+                <form th:action="@{/comments/delete/{id}(id=${comment.id})}" method="post">
                     <input type="text" name="task" th:value="${task.id}" hidden="hidden"/>
                     <button type="submit">삭제</button>
                 </form>
@@ -157,7 +166,7 @@
         <!-- Comment Form -->
         <div class="comment-form" th:if="${user != null}">
             <h4>댓글 작성</h4>
-            <form th:action="@{/comment}" method="post">
+            <form th:action="@{/comments}" method="post">
                 <label>
                     <input type="text" name="task" th:value="${task.id}" hidden="hidden"/>
                 </label>

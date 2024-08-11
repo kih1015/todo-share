@@ -37,6 +37,10 @@
         <p th:class="${task.completed ? 'completed' : 'not-completed'}"
            th:text="${task.completed ? '완료됨' : '완료되지 않음'}"></p>
         <p th:text="'작성자: ' + ${task.writer.nickname}">작성자</p>
+        <p>생성날짜: <span th:text="${task.createdDate.toLocalDate()}">Created Date</span>
+            <span th:text="${task.createdDate().toLocalTime()}">Created Date</span></p>
+        <p>마감날짜: <span th:text="${task.deadline().toLocalDate()}">Created Date</span>
+            <span th:text="${task.deadline().toLocalTime()}">Created Date</span></p>
         <p th:text="'좋아요 수: ' + ${task.likesNum}">좋아요 수</p>
     </div>
 </div>

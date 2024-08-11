@@ -8,21 +8,15 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: #f0f0f0;
         }
         .signup-container {
             background-color: #fff;
+            margin: 100px auto;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
+            width: 300px;
         }
         .signup-container h2 {
             text-align: center;
@@ -35,7 +29,7 @@
         }
         .signup-container input[type="text"],
         .signup-container input[type="password"] {
-            width: 100%;
+            width: 90%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
@@ -62,6 +56,30 @@
     </style>
 </head>
 <body>
+<div class="navbar">
+    <a href="/">홈</a>
+    <a href="/users/me">마이 페이지</a>
+    <div class="right">
+        <div th:if="${user != null}">
+            <div style="display: flex">
+                <span style="color: white" th:text="${user.nickname} + '님 환영합니다'"></span>
+                <form action="/users/logout" method="post">
+                    <button type="submit">로그아웃</button>
+                </form>
+                <form action="/users/delete" method="post">
+                    <button type="submit">회원탈퇴</button>
+                </form>
+                <form action="/users/update" method="get">
+                    <button type="submit">회원정보수정</button>
+                </form>
+            </div>
+        </div>
+        <div th:if="${user == null}">
+            <a href="/users/login">로그인</a>
+            <a href="/users/signup">회원가입</a>
+        </div>
+    </div>
+</div>
 <div class="signup-container">
     <h2>회원가입</h2>
     <form action="/users/signup" method="post">

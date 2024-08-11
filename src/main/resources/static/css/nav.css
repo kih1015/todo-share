@@ -66,6 +66,14 @@ h1 {
     color: red;
     font-weight: bold;
 }
+.completed {
+    color: green;
+    font-weight: bold;
+}
+.not-completed {
+    color: red;
+    font-weight: bold;
+}
 .task-card .comments {
     margin-top: 10px;
     border-top: 1px solid #eee;

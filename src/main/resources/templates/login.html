@@ -3,9 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/nav.css}">
     <link rel="stylesheet" th:href="@{/css/login.css}" />
 </head>
 <body>
+<div class="navbar">
+    <a href="/">홈</a>
+    <a href="/users/me">마이 페이지</a>
+    <div class="right">
+        <div th:if="${user != null}">
+            <div style="display: flex">
+                <span style="color: white" th:text="${user.nickname} + '님 환영합니다'"></span>
+                <form action="/users/logout" method="post">
+                    <button type="submit">로그아웃</button>
+                </form>
+                <form action="/users/delete" method="post">
+                    <button type="submit">회원탈퇴</button>
+                </form>
+                <form action="/users/update" method="get">
+                    <button type="submit">회원정보수정</button>
+                </form>
+            </div>
+        </div>
+        <div th:if="${user == null}">
+            <a href="/users/login">로그인</a>
+            <a href="/users/signup">회원가입</a>
+        </div>
+    </div>
+</div>
 <div class="login-container">
     <h2>Login</h2>
     <form th:action="@{/users/login}" method="post" th:object="${userLoginRequest}">

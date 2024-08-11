@@ -45,6 +45,7 @@ public class ViewController {
             return "redirect:/users/login";
         } else {
             model.addAttribute("user", userService.getById(userId));
+            model.addAttribute("tasks", taskService.getAll().stream().filter(taskResponse -> taskResponse.writer().id().equals(userId)));
         }
         return "mypage";
     }
@@ -90,7 +91,6 @@ public class ViewController {
             throw new AccessDeniedException();
         }
         model.addAttribute("request", taskService.getById(id));
-//        model.addAttribute("request", new TaskUpdateRequest("","", null, null));
         return "task-update";
     }
 
@@ -107,7 +107,7 @@ public class ViewController {
             throw new AccessDeniedException();
         }
         taskService.update(id, request);
-        return "redirect:/users/me";
+        return "redirect:/tasks/" + id;
     }
 
     @PostMapping("/tasks/delete/{id}")
@@ -138,16 +138,52 @@ public class ViewController {
         return "task";
     }
 
-    @PostMapping("/comment")
+    @PostMapping("/comments")
     public String createComment(
             @Valid CommentCreateRequest request,
             @SessionAttribute(required = false) Long userId
     ) {
         commentService.create(userId, request);
-        return "redirect:/task/" + request.task().toString();
+        return "redirect:/tasks/" + request.task().toString();
     }
 
-    @PostMapping("/comment/delete/{id}")
+    @GetMapping("/comments/update/{id}")
+    public String showUpdateComment(
+            @PathVariable Long id,
+            @ModelAttribute("task") Long taskId,
+            Model model,
+            @SessionAttribute(required = false) Long userId
+    ) {
+        if (userId == null) {
+            return "redirect:/users/login";
+        }
+        if (!commentService.getById(id).writer().id().equals(userId)) {
+            throw new AccessDeniedException();
+        }
+        model.addAttribute("commentId", id);
+        model.addAttribute("taskId", taskId);
+        model.addAttribute("content", commentService.getById(id).content());
+        return "comment-update";
+    }
+
+    @PostMapping("/comments/update/{id}")
+    public String updateComment(
+            @PathVariable Long id,
+            @ModelAttribute("task") Long taskId,
+            @ModelAttribute("content") String content,
+            @SessionAttribute(required = false) Long userId
+    ) {
+        if (userId == null) {
+            return "redirect:/users/login";
+        }
+        if (!commentService.getById(id).writer().id().equals(userId)) {
+            throw new AccessDeniedException();
+        }
+        commentService.update(id, new CommentUpdateRequest(content));
+        return "redirect:/tasks/" + taskId.toString();
+    }
+
+    @PostMapping("/comments/delete/{id}")
     public String deleteComment(
             @PathVariable Long id,
             @ModelAttribute("task") Long taskId,
