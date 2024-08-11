@@ -22,7 +22,7 @@ import java.net.URI;
 
 @Tag(name = "Comment API", description = "댓글 관련 api")
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/api/comments")
 @AllArgsConstructor
 public class CommentController {
 

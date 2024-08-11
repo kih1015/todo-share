@@ -23,7 +23,7 @@ import java.net.URI;
 
 @Tag(name = "User API", description = "사용자 관련 api")
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/api/users")
 @AllArgsConstructor
 public class UserController {
 

@@ -20,7 +20,7 @@ import java.net.URI;
 
 @Tag(name = "Like API", description = "좋아요 관련 api")
 @RestController
-@RequestMapping("/likes")
+@RequestMapping("/api/likes")
 @AllArgsConstructor
 public class LikeController {
 
