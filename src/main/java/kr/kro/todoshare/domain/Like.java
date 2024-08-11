@@ -19,7 +19,7 @@ public class Like {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "\"user\"")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
