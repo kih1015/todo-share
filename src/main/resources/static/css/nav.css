@@ -79,3 +79,10 @@ h1 {
 .task-card .comment {
     margin-bottom: 5px;
 }
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}

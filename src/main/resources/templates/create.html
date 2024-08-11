@@ -35,10 +35,15 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        form {
+            padding: 10px 15px;
+        }
     </style>
 </head>
+<body>
 <div class="navbar">
-    <a href="/" class="active">홈</a>
+    <a href="/">홈</a>
     <a href="/mypage">마이 페이지</a>
     <div class="right">
         <div th:if="${user != null}">
@@ -53,7 +58,6 @@
         <a href="/signup">회원가입</a>
     </div>
 </div>
-<body>
 <h1>할 일 생성</h1>
 <form th:action="@{/task/create}" th:object="${taskCreateRequest}" method="post">
     <div class="form-group">

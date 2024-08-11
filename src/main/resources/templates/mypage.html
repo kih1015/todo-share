@@ -29,6 +29,9 @@
         <p th:class="${task.completed ? 'completed' : 'not-completed'}"
            th:text="${task.completed ? '완료됨' : '완료되지 않음'}"></p>
     </div>
+    <div class="task-card">
+        <a th:href="@{/task/create}"><h2>새로운 할 일 작성하기</h2></a>
+    </div>
 </div>
 </body>
 </html>
