@@ -23,7 +23,7 @@
 
 <div class="task-container">
     <div th:each="task : ${tasks}" class="task-card">
-        <h2 th:text="${task.title}">할 일 제목</h2>
+        <a th:href="@{/task/{id}(id=${task.id})}"><h2 th:text="${task.title}">할 일 제목</h2></a>
         <p th:class="${task.completed ? 'completed' : 'not-completed'}"
            th:text="${task.completed ? '완료됨' : '완료되지 않음'}"></p>
         <p th:text="'작성자: ' + ${task.writer.nickname}">작성자</p>

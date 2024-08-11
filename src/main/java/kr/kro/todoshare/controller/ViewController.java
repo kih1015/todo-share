@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
@@ -44,6 +45,17 @@ public class ViewController {
             model.addAttribute("user", userService.getById(userId));
         }
         return "mypage";
+    }
+
+    @GetMapping("/task/{id}")
+    public String task(@PathVariable Long id, Model model, @SessionAttribute(required = false) Long userId) {
+        if (userId == null) {
+            model.addAttribute("user", null);
+        } else {
+            model.addAttribute("user", userService.getById(userId));
+        }
+        model.addAttribute("task", taskService.getById(id));
+        return "task";
     }
 
     @GetMapping("/login")

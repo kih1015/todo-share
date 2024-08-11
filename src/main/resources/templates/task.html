@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Detail</title>
+    <link rel="stylesheet" th:href="@{/css/nav.css}" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .task-title {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .task-meta {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .task-content {
+            margin-bottom: 20px;
+        }
+        .comments {
+            margin-top: 30px;
+        }
+        .comment {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .comment-meta {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        .likes {
+            color: #f00;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <a href="/">홈</a>
+    <a href="/mypage">마이 페이지</a>
+    <div class="right">
+        <div th:if="${user != null}">
+            <span style="color: white" th:text="${user.nickname} + '님 환영합니다'"></span>
+            <a href="/logout">로그아웃</a>
+        </div>
+        <div th:if="${user == null}">
+            <a href="/login">로그인</a>
+            <a href="/signup">회원가입</a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h1 class="task-title" th:text="${task.title}">Task Title</h1>
+    <div class="task-meta">
+        <span th:text="${task.writer.nickname}">Writer</span> |
+        <span th:text="${task.createdDate}">Created Date</span>
+    </div>
+    <div class="task-content" th:text="${task.content}">Task Content</div>
+    <div class="task-deadline">Deadline: <span th:text="${task.deadline}">Deadline</span></div>
+    <div class="task-likes">Likes: <span th:text="${task.likesNum}">0</span></div>
+    <div class="comments">
+        <h3>Comments</h3>
+        <div th:each="comment : ${task.comments}">
+            <div class="comment">
+                <div class="comment-meta">
+                    <span th:text="${comment.writer.nickname}">Comment Writer</span> |
+                    <span th:text="${comment.createdDate}">Comment Date</span>
+                </div>
+                <div class="comment-content" th:text="${comment.content}">Comment Content</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
