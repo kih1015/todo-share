@@ -3,10 +3,12 @@ package kr.kro.todoshare.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import kr.kro.todoshare.controller.dto.request.CommentCreateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
 import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
 import kr.kro.todoshare.controller.dto.response.TaskResponse;
 import kr.kro.todoshare.exception.AuthenticationException;
+import kr.kro.todoshare.service.CommentService;
 import kr.kro.todoshare.service.TaskService;
 import kr.kro.todoshare.service.UserService;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,7 @@ public class ViewController {
 
     private final TaskService taskService;
     private final UserService userService;
+    private final CommentService commentService;
 
     @GetMapping("/")
     public String home(Model model, @SessionAttribute(required = false) Long userId) {
@@ -61,12 +64,8 @@ public class ViewController {
     @PostMapping("/task/create")
     public String createTask(
             @Valid TaskCreateRequest request,
-            @SessionAttribute(name = "userId", required = false) Long userId,
-            BindingResult result
+            @SessionAttribute(name = "userId", required = false) Long userId
     ) {
-        if (result.hasErrors()) {
-            return "create";
-        }
         if (userId == null) {
             return "redirect:/login";
         }
@@ -82,7 +81,16 @@ public class ViewController {
             model.addAttribute("user", userService.getById(userId));
         }
         model.addAttribute("task", taskService.getById(id));
+        model.addAttribute("commentCreateRequest", new CommentCreateRequest("", id));
         return "task";
+    }
+
+    @PostMapping("/comment")
+    public String createComment(
+            @Valid CommentCreateRequest request,
+            @SessionAttribute(required = false) Long userId) {
+        commentService.create(userId, request);
+        return "redirect:/task/" + request.task().toString();
     }
 
     @GetMapping("/login")
@@ -94,12 +102,8 @@ public class ViewController {
     @PostMapping("/login")
     public String login(
             @Valid UserLoginRequest request,
-            BindingResult result,
             HttpSession session
     ) {
-        if (result.hasErrors()) {
-            return "login";
-        }
         session.setAttribute("userId", userService.login(request));
         session.setMaxInactiveInterval(1800);
         return "redirect:/mypage"; // Redirect to the home page upon successful login

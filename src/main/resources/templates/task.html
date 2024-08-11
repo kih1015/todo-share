@@ -46,6 +46,28 @@
         .likes {
             color: #f00;
         }
+        .comment-form {
+            margin-top: 20px;
+        }
+        .comment-form textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .comment-form button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -72,10 +94,10 @@
         <span th:text="${task.createdDate}">Created Date</span>
     </div>
     <div class="task-content" th:text="${task.content}">Task Content</div>
-    <div class="task-deadline">Deadline: <span th:text="${task.deadline}">Deadline</span></div>
-    <div class="task-likes">Likes: <span th:text="${task.likesNum}">0</span></div>
+    <div class="task-deadline">마감기한: <span th:text="${task.deadline}">Deadline</span></div>
+    <div class="task-likes">좋아요 수: <span th:text="${task.likesNum}">0</span></div>
     <div class="comments">
-        <h3>Comments</h3>
+        <h3>댓글</h3>
         <div th:each="comment : ${task.comments}">
             <div class="comment">
                 <div class="comment-meta">
@@ -84,6 +106,23 @@
                 </div>
                 <div class="comment-content" th:text="${comment.content}">Comment Content</div>
             </div>
+        </div>
+
+        <!-- Comment Form -->
+        <div class="comment-form" th:if="${user != null}">
+            <h4>댓글 작성</h4>
+            <form th:action="@{/comment}" method="post">
+                <label>
+                    <input type="text" name="task" th:value="${task.id}" hidden="hidden"/>
+                </label>
+                <label for="content">
+                    <textarea name="content" placeholder="댓글을 작성하세요..." id="content"></textarea>
+                </label>
+                <button type="submit">댓글 작성</button>
+            </form>
+        </div>
+        <div th:if="${user == null}">
+            <p>댓글을 작성하려면 <a href="/login">로그인</a> 해주세요.</p>
         </div>
     </div>
 </div>
