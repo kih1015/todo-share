@@ -11,10 +11,15 @@
     <a href="/mypage">마이 페이지</a>
     <div class="right">
         <div th:if="${user != null}">
-            <span style="color: white" th:text="${user.nickname} + '님 환영합니다'"></span>
-            <form action="/logout" method="post">
-                <button type="submit">로그아웃</button>
-            </form>
+            <div style="display: flex">
+                <span style="color: white" th:text="${user.nickname} + '님 환영합니다'"></span>
+                <form action="/logout" method="post">
+                    <button type="submit">로그아웃</button>
+                </form>
+                <form action="/cancel" method="post">
+                    <button type="submit">회원탈퇴</button>
+                </form>
+            </div>
         </div>
         <div th:if="${user == null}">
             <a href="/login">로그인</a>

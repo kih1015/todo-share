@@ -169,4 +169,14 @@ public class ViewController {
         session.invalidate();
         return "redirect:/";
     }
+
+    @PostMapping("/cancel")
+    public String cancel(HttpSession session) {
+        if (session.getAttribute("userId") == null) {
+            throw new AuthenticationException();
+        }
+        userService.delete((Long) session.getAttribute("userId"));
+        session.invalidate();
+        return "redirect:/";
+    }
 }
