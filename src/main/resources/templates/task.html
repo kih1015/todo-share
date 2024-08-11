@@ -4,51 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Detail</title>
-    <link rel="stylesheet" th:href="@{/css/nav.css}" />
+    <link rel="stylesheet" th:href="@{/css/nav.css}"/>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: #fff;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .task-title {
             font-size: 2em;
             margin-bottom: 10px;
         }
+
         .task-meta {
             color: #666;
             margin-bottom: 20px;
         }
+
         .task-content {
             margin-bottom: 20px;
         }
+
         .comments {
             margin-top: 30px;
         }
+
         .comment {
             margin-bottom: 20px;
             padding: 10px;
             background: #f9f9f9;
             border-radius: 5px;
         }
+
         .comment-meta {
             color: #888;
             font-size: 0.9em;
             margin-bottom: 5px;
         }
+
         .likes {
             color: #f00;
         }
+
         .comment-form {
             margin-top: 20px;
         }
+
         .comment-form textarea {
             width: 100%;
             height: 100px;
@@ -57,6 +67,7 @@
             border-radius: 5px;
             border: 1px solid #ddd;
         }
+
         .comment-form button {
             padding: 10px 20px;
             border: none;
@@ -65,6 +76,7 @@
             color: #fff;
             cursor: pointer;
         }
+
         .comment-form button:hover {
             background-color: #0056b3;
         }
@@ -96,6 +108,13 @@
     <div class="task-content" th:text="${task.content}">Task Content</div>
     <div class="task-deadline">마감기한: <span th:text="${task.deadline}">Deadline</span></div>
     <div class="task-likes">좋아요 수: <span th:text="${task.likesNum}">0</span></div>
+    <form action="/like" method="post">
+        <div th:if="${user != null}">
+            <button type="submit">좋아요</button>
+            <input type="text" name="task" th:value="${task.id}" hidden="hidden"/>
+            <input type="text" name="user" th:value="${user.id}" hidden="hidden"/>
+        </div>
+    </form>
     <div class="comments">
         <h3>댓글</h3>
         <div th:each="comment : ${task.comments}">

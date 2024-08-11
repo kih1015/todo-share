@@ -3,13 +3,11 @@ package kr.kro.todoshare.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import kr.kro.todoshare.controller.dto.request.CommentCreateRequest;
-import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
-import kr.kro.todoshare.controller.dto.request.UserCreateRequest;
-import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
+import kr.kro.todoshare.controller.dto.request.*;
 import kr.kro.todoshare.controller.dto.response.TaskResponse;
 import kr.kro.todoshare.exception.AuthenticationException;
 import kr.kro.todoshare.service.CommentService;
+import kr.kro.todoshare.service.LikeService;
 import kr.kro.todoshare.service.TaskService;
 import kr.kro.todoshare.service.UserService;
 import lombok.AllArgsConstructor;
@@ -28,6 +26,7 @@ public class ViewController {
     private final TaskService taskService;
     private final UserService userService;
     private final CommentService commentService;
+    private final LikeService likeService;
 
     @GetMapping("/")
     public String home(Model model, @SessionAttribute(required = false) Long userId) {
@@ -89,7 +88,8 @@ public class ViewController {
     @PostMapping("/comment")
     public String createComment(
             @Valid CommentCreateRequest request,
-            @SessionAttribute(required = false) Long userId) {
+            @SessionAttribute(required = false) Long userId
+    ) {
         commentService.create(userId, request);
         return "redirect:/task/" + request.task().toString();
     }
@@ -107,7 +107,7 @@ public class ViewController {
     ) {
         session.setAttribute("userId", userService.login(request));
         session.setMaxInactiveInterval(1800);
-        return "redirect:/mypage"; // Redirect to the home page upon successful login
+        return "redirect:/mypage";
     }
 
     @GetMapping("/signup")
@@ -117,13 +117,19 @@ public class ViewController {
 
     @PostMapping("/signup")
     public String handleSignup(
-            @Valid UserCreateRequest request,
-            Model model
+            @Valid UserCreateRequest request
     ) {
         userService.create(request);
-
-        // 성공 시 다른 페이지로 리다이렉트
         return "redirect:/signup-success";
+    }
+
+    @PostMapping("/like")
+    public String like(
+            @Valid LikeCreateRequest request,
+            @SessionAttribute Long userId
+            ) {
+        likeService.create(userId, request);
+        return "redirect:/task/" + request.task().toString();
     }
 
     @GetMapping("/signup-success")
