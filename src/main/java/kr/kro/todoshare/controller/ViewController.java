@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kr.kro.todoshare.controller.dto.request.CommentCreateRequest;
 import kr.kro.todoshare.controller.dto.request.TaskCreateRequest;
+import kr.kro.todoshare.controller.dto.request.UserCreateRequest;
 import kr.kro.todoshare.controller.dto.request.UserLoginRequest;
 import kr.kro.todoshare.controller.dto.response.TaskResponse;
 import kr.kro.todoshare.exception.AuthenticationException;
@@ -107,6 +108,27 @@ public class ViewController {
         session.setAttribute("userId", userService.login(request));
         session.setMaxInactiveInterval(1800);
         return "redirect:/mypage"; // Redirect to the home page upon successful login
+    }
+
+    @GetMapping("/signup")
+    public String showSignupForm(Model model) {
+        return "signup";
+    }
+
+    @PostMapping("/signup")
+    public String handleSignup(
+            @Valid UserCreateRequest request,
+            Model model
+    ) {
+        userService.create(request);
+
+        // 성공 시 다른 페이지로 리다이렉트
+        return "redirect:/signup-success";
+    }
+
+    @GetMapping("/signup-success")
+    public String showSignupSuccess(Model model) {
+        return "signup-success";
     }
 
     @PostMapping("/logout")
