@@ -8,19 +8,19 @@
 <body>
 <div class="login-container">
     <h2>Login</h2>
-    <form th:action="@{/login}" method="post" th:object="${userLoginRequest}">
+    <form th:action="@{/users/login}" method="post" th:object="${userLoginRequest}">
         <div>
             <label for="loginId">Login ID</label>
-            <input type="text" id="loginId" th:field="*{loginId}" placeholder="Enter your login ID"/>
+            <input type="text" id="loginId" th:field="*{loginId}" placeholder="ID"/>
             <div th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}" class="error"></div>
         </div>
         <div>
             <label for="password">Password</label>
-            <input type="password" id="password" th:field="*{password}" placeholder="Enter your password"/>
+            <input type="password" id="password" th:field="*{password}" placeholder="password"/>
             <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>
         </div>
         <div>
-            <button type="submit">Login</button>
+            <button type="submit">로그인</button>
         </div>
     </form>
 </div>

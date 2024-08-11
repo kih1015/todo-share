@@ -41,7 +41,7 @@ public class ViewController {
         return "index";
     }
 
-    @GetMapping("/mypage")
+    @GetMapping("users/me")
     public String mypage(Model model, @SessionAttribute(required = false) Long userId) {
         if (userId == null) {
             throw new AuthenticationException();
@@ -68,10 +68,10 @@ public class ViewController {
             @SessionAttribute(name = "userId", required = false) Long userId
     ) {
         if (userId == null) {
-            return "redirect:/login";
+            return "redirect:/users/login";
         }
         taskService.create(userId, request);
-        return "redirect:/mypage";
+        return "redirect:/users/me";
     }
 
     @PostMapping("/task/delete/{id}")
@@ -84,7 +84,7 @@ public class ViewController {
             throw new AccessDeniedException();
         }
         taskService.delete(id);
-        return "redirect:/mypage";
+        return "redirect:/users/me";
     }
 
     @GetMapping("/task/{id}")
@@ -121,33 +121,33 @@ public class ViewController {
         return "redirect:/task/" + taskId.toString();
     }
 
-    @GetMapping("/login")
+    @GetMapping("/users/login")
     public String showLoginForm(Model model) {
         model.addAttribute("userLoginRequest", new UserLoginRequest("", ""));
         return "login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public String login(
             @Valid UserLoginRequest request,
             HttpSession session
     ) {
         session.setAttribute("userId", userService.login(request));
         session.setMaxInactiveInterval(1800);
-        return "redirect:/mypage";
+        return "redirect:/users/me";
     }
 
-    @GetMapping("/signup")
+    @GetMapping("/users/signup")
     public String showSignupForm(Model model) {
         return "signup";
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/users/signup")
     public String handleSignup(
             @Valid UserCreateRequest request
     ) {
         userService.create(request);
-        return "redirect:/signup-success";
+        return "redirect:/users/signup-success";
     }
 
     @PostMapping("/like")
@@ -159,18 +159,18 @@ public class ViewController {
         return "redirect:/task/" + request.task().toString();
     }
 
-    @GetMapping("/signup-success")
-    public String showSignupSuccess(Model model) {
+    @GetMapping("/users/signup-success")
+    public String showSignupSuccess() {
         return "signup-success";
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/users/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
     }
 
-    @PostMapping("/cancel")
+    @PostMapping("/users/delete")
     public String cancel(HttpSession session) {
         if (session.getAttribute("userId") == null) {
             throw new AuthenticationException();
@@ -178,5 +178,29 @@ public class ViewController {
         userService.delete((Long) session.getAttribute("userId"));
         session.invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping("/users/update")
+    public String showUpdateUser(
+            @SessionAttribute(required = false) Long userId,
+            Model model
+    ) {
+        if (userId == null) {
+            throw new AuthenticationException();
+        }
+        model.addAttribute("user", userService.getById(userId));
+        return "user-update";
+    }
+
+    @PostMapping("/users/update")
+    public String updateUser(
+            @Valid UserUpdateRequest request,
+            @SessionAttribute Long userId
+    ) {
+        if (userId == null) {
+            throw new AuthenticationException();
+        }
+        userService.update(userId, request);
+        return "redirect:/users/me";
     }
 }
