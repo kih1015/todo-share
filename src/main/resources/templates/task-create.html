@@ -44,7 +44,7 @@
 <body>
 <div class="navbar">
     <a href="/">홈</a>
-    <a href="/mypage">마이 페이지</a>
+    <a href="/users/me">마이 페이지</a>
     <div class="right">
         <div th:if="${user != null}">
             <div style="display: flex">
@@ -67,7 +67,7 @@
     </div>
 </div>
 <h1>할 일 생성</h1>
-<form th:action="@{/task/create}" th:object="${taskCreateRequest}" method="post">
+<form th:action="@{/tasks/create}" th:object="${taskCreateRequest}" method="post">
     <div class="form-group">
         <label for="title">제목:</label>
         <input type="text" id="title" th:field="*{title}" placeholder="제목을 입력하세요"/>
