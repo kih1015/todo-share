@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>홈</title>
+    <link rel="stylesheet" th:href="@{/css/nav.css}" />
+</head>
+<body>
+<div class="navbar">
+    <a href="/">홈</a>
+    <a href="/mypage" class="active">마이 페이지</a>
+    <div class="right">
+        <div th:if="${user != null}">
+            <span style="color: white" th:text="${user.nickname} + '님 환영합니다'"></span>
+            <a href="/logout">로그아웃</a>
+        </div>
+        <div th:if="${user == null}">
+            <a href="/login">로그인</a>
+            <a href="/signup">회원가입</a>
+        </div>
+    </div>
+</div>
+<h2>내 할일 목록</h2>
+<div class="task-container">
+    <div th:each="task : ${user.task}" class="task-card">
+        <h2 th:text="${task.title}">할 일 제목</h2>
+        <p th:class="${task.completed ? 'completed' : 'not-completed'}"
+           th:text="${task.completed ? '완료됨' : '완료되지 않음'}"></p>
+    </div>
+</div>
+</body>
+</html>
